@@ -40,7 +40,23 @@ This will add the package to your project’s dependencies and create an autoloa
 
 ## Usage
 
+Call the Tokens API to get a [Restricted Data Token](https://developer-docs.amazon.com/sp-api/docs/tokens-api-v2021-03-01-reference) (RDT) for restricted resources.
 
+```php
+use Zerotoprod\SpapiTokens\SpapiTokens;
+
+$response = SpapiTokens::restrictedDataToken(
+    'https://httpbin.org/post',
+    'access_token',
+    'path',
+    ['dataElements'],
+    'targetApplication',
+    'user-agent'
+);
+
+$response['response']['restrictedDataToken'];
+$response['response']['expiresIn'];
+```
 
 ## Contributing
 
