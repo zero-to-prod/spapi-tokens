@@ -11,12 +11,12 @@ class RestrictedDataTokenTest extends TestCase
     public function restrictedDataToken(): void
     {
         $response = SpapiTokens::restrictedDataToken(
-            'https://httpbin.org/post',
             'access_token',
             'path',
             ['dataElements'],
             'targetApplication',
-            'user-agent'
+            'user-agent',
+            'https://httpbin.org/post'
         );
 
         self::assertEquals(200, $response['info']['http_code']);

@@ -46,12 +46,12 @@ Call the Tokens API to get a [Restricted Data Token](https://developer-docs.amaz
 use Zerotoprod\SpapiTokens\SpapiTokens;
 
 $response = SpapiTokens::restrictedDataToken(
-    'https://sellingpartnerapi-na.amazon.com/tokens/2021-03-01/restrictedDataToken',
     'access_token',
     'path',
     ['dataElements'],
     'targetApplication',
-    'user-agent'
+    'user-agent',
+    'https://sellingpartnerapi-na.amazon.com/tokens/2021-03-01/restrictedDataToken'
 );
 
 $response['response']['restrictedDataToken'];
