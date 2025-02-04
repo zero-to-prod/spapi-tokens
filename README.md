@@ -45,7 +45,7 @@ Call the Tokens API to get a [Restricted Data Token](https://developer-docs.amaz
 ```php
 use Zerotoprod\SpapiTokens\SpapiTokens;
 
-$response = SpapiTokens::restrictedDataToken(
+$response = SpapiTokens::createRestrictedDataToken(
     'access_token',
     'path',
     ['dataElements'],
