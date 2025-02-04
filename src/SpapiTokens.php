@@ -2,6 +2,8 @@
 
 namespace Zerotoprod\SpapiTokens;
 
+use Zerotoprod\CurlHelper\CurlHelper;
+
 class SpapiTokens
 {
     /**
@@ -36,19 +38,22 @@ class SpapiTokens
                 ],
                 'targetApplication' => $targetApplication
             ]),
-            CURLOPT_RETURNTRANSFER => true
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_HEADER => true,
         ]);
 
         $response = curl_exec($CurlHandle);
         $info = curl_getinfo($CurlHandle);
         $error = curl_error($CurlHandle);
+        $header_size = curl_getinfo($CurlHandle, CURLINFO_HEADER_SIZE);
 
         curl_close($CurlHandle);
 
         return [
             'info' => $info,
             'error' => $error,
-            'response' => json_decode($response, true)
+            'headers' => CurlHelper::parseHeaders($response, $header_size),
+            'response' => json_decode(substr($response, $header_size), true)
         ];
     }
 }
