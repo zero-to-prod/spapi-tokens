@@ -10,7 +10,7 @@ class RestrictedDataTokenTest extends TestCase
     /** @test */
     public function restrictedDataToken(): void
     {
-        $response = SpapiTokens::restrictedDataToken(
+        $response = SpapiTokens::createRestrictedDataToken(
             'access_token',
             'path',
             ['dataElements'],
