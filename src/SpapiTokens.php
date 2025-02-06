@@ -28,7 +28,7 @@ class SpapiTokens
      *                                          - shippingAddress. This includes information for fulfilling orders.
      *                                          - buyerTaxInformation. This includes information for issuing tax invoices
      * @param  string|null  $targetApplication  The application ID for the target application to which access is being delegated.
-     * @param  string       $url                The URL for the api
+     * @param  string       $base_uri           The URL for the api
      * @param  string|null  $user_agent         The user agent for the request.
      * @param  array        $options            Curl options.
      *
@@ -99,11 +99,11 @@ class SpapiTokens
         string $path,
         array $dataElements = [],
         ?string $targetApplication = null,
-        string $url = 'https://sellingpartnerapi-na.amazon.com/tokens/2021-03-01/restrictedDataToken',
+        string $base_uri = 'https://sellingpartnerapi-na.amazon.com/tokens/2021-03-01/restrictedDataToken',
         ?string $user_agent = null,
         array $options = []
     ): array {
-        $CurlHandle = curl_init($url);
+        $CurlHandle = curl_init($base_uri);
 
         curl_setopt_array(
             $CurlHandle,
