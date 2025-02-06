@@ -15,8 +15,8 @@ class RestrictedDataTokenTest extends TestCase
             'path',
             ['dataElements'],
             'targetApplication',
-            'user-agent',
-            'https://httpbin.org/post'
+            'https://httpbin.org/post',
+            'user-agent'
         );
 
         self::assertEquals(200, $response['info']['http_code']);
