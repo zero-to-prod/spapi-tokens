@@ -52,6 +52,7 @@ $response = SpapiTokens::createRestrictedDataToken(
     'targetApplication',
     'https://sellingpartnerapi-na.amazon.com/tokens/2021-03-01/restrictedDataToken',
     'user-agent'
+    ['options']
 );
 
 $response['response']['restrictedDataToken'];
