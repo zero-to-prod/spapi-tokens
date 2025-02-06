@@ -91,7 +91,7 @@ class SpapiTokens
      *      expiresIn: int,
      *      restrictedDataToken: string
      *  }
-     *     *
+     *
      * @link https://developer-docs.amazon.com/sp-api/docs/tokens-api-v2021-03-01-reference
      */
     public static function createRestrictedDataToken(
@@ -103,14 +103,21 @@ class SpapiTokens
         ?string $user_agent = null,
         array $options = []
     ): array {
-        $CurlHandle = curl_init($base_uri);
+        $CurlHandle = curl_init();
 
         curl_setopt_array(
             $CurlHandle,
             [
-                CURLOPT_POST => true,
+                CURLOPT_URL => $base_uri,
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_ENCODING => "",
+                CURLOPT_MAXREDIRS => 10,
+                CURLOPT_TIMEOUT => 30,
+                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                CURLOPT_CUSTOMREQUEST => "POST",
                 CURLOPT_HTTPHEADER => [
-                    'Content-Type: application/json',
+                    'accept: application/json',
+                    'content-type: application/json',
                     "x-amz-access-token: $access_token",
                     'user-agent: '.($user_agent ?: '(Language=PHP/'.PHP_VERSION.'; Platform='.php_uname('s').'/'.php_uname('r').')')
                 ],
@@ -124,7 +131,6 @@ class SpapiTokens
                     ],
                     'targetApplication' => $targetApplication
                 ]),
-                CURLOPT_RETURNTRANSFER => true,
                 CURLOPT_HEADER => true,
             ] + $options
         );
