@@ -4,6 +4,15 @@ namespace Zerotoprod\SpapiTokens;
 
 use Zerotoprod\CurlHelper\CurlHelper;
 
+/**
+ * The Selling Partner API for Tokens provides a secure way to access a customer's PII
+ * (Personally Identifiable Information). You can call the Tokens API to get a
+ * Restricted Data Token (RDT) for one or more restricted resources that you
+ * specify. The RDT authorizes subsequent calls to restricted operations
+ * that correspond to the restricted resources that you specified.
+ *
+ * @link https://developer-docs.amazon.com/sp-api/docs/tokens-api-v2021-03-01-reference
+ */
 class SpapiTokens
 {
     /**
@@ -19,8 +28,9 @@ class SpapiTokens
      *                                          - shippingAddress. This includes information for fulfilling orders.
      *                                          - buyerTaxInformation. This includes information for issuing tax invoices
      * @param  string|null  $targetApplication  The application ID for the target application to which access is being delegated.
-     * @param  string|null  $user_agent         The user agent for the request.
      * @param  string       $url                The URL for the api
+     * @param  string|null  $user_agent         The user agent for the request.
+     * @param  array        $options            Curl options.
      *
      * @return array{
      *  info: array{
@@ -84,30 +94,40 @@ class SpapiTokens
      *     *
      * @link https://developer-docs.amazon.com/sp-api/docs/tokens-api-v2021-03-01-reference
      */
-    public static function createRestrictedDataToken(string $access_token, string $path, array $dataElements = [], ?string $targetApplication = null, ?string $user_agent = null, string $url = 'https://sellingpartnerapi-na.amazon.com/tokens/2021-03-01/restrictedDataToken'): array
-    {
+    public static function createRestrictedDataToken(
+        string $access_token,
+        string $path,
+        array $dataElements = [],
+        ?string $targetApplication = null,
+        string $url = 'https://sellingpartnerapi-na.amazon.com/tokens/2021-03-01/restrictedDataToken',
+        ?string $user_agent = null,
+        array $options = []
+    ): array {
         $CurlHandle = curl_init($url);
 
-        curl_setopt_array($CurlHandle, [
-            CURLOPT_POST => true,
-            CURLOPT_HTTPHEADER => [
-                'Content-Type: application/json',
-                "x-amz-access-token: $access_token",
-                'user-agent: '.($user_agent ?: '(Language=PHP/'.PHP_VERSION.'; Platform='.php_uname('s').'/'.php_uname('r').')')
-            ],
-            CURLOPT_POSTFIELDS => json_encode([
-                'restrictedResources' => [
-                    [
-                        'method' => 'GET',
-                        'path' => $path,
-                        'dataElements' => $dataElements
-                    ]
+        curl_setopt_array(
+            $CurlHandle,
+            [
+                CURLOPT_POST => true,
+                CURLOPT_HTTPHEADER => [
+                    'Content-Type: application/json',
+                    "x-amz-access-token: $access_token",
+                    'user-agent: '.($user_agent ?: '(Language=PHP/'.PHP_VERSION.'; Platform='.php_uname('s').'/'.php_uname('r').')')
                 ],
-                'targetApplication' => $targetApplication
-            ]),
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_HEADER => true,
-        ]);
+                CURLOPT_POSTFIELDS => json_encode([
+                    'restrictedResources' => [
+                        [
+                            'method' => 'GET',
+                            'path' => $path,
+                            'dataElements' => $dataElements
+                        ]
+                    ],
+                    'targetApplication' => $targetApplication
+                ]),
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_HEADER => true,
+            ] + $options
+        );
 
         $response = curl_exec($CurlHandle);
         $info = curl_getinfo($CurlHandle);
