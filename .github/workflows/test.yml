@@ -17,7 +17,13 @@ jobs:
       - name: Set safe directory
         run: git config --global --add safe.directory /github/workspace
       - name: "Check for BC breaks"
-        uses: docker://nyholm/roave-bc-check-ga
+        run: |
+          git config --global --add safe.directory "${GITHUB_WORKSPACE}"
+
+          docker run --rm \
+            -v "${GITHUB_WORKSPACE}":/github/workspace \
+            -w /github/workspace \
+            nyholm/roave-bc-check-ga
 
   test:
     runs-on: ubuntu-latest
