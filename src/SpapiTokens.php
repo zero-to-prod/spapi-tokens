@@ -158,7 +158,6 @@ class SpapiTokens
      * @link https://developer-docs.amazon.com/sp-api/docs/tokens-api-v2021-03-01-reference
      */
     public function createRestrictedDataToken(
-        string $path,
         array $dataElements = [],
         array $options = []
     ): array {
