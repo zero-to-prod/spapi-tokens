@@ -16,21 +16,84 @@ use Zerotoprod\CurlHelper\CurlHelper;
 class SpapiTokens
 {
     /**
-     * @param  string       $access_token       The access token to create the RDT
-     * @param  string       $path               The path in the restricted resource. Here are some path examples:
+     * @var string
+     */
+    private $access_token;
+    /**
+     * @var string
+     */
+    private $targetApplication;
+    /**
+     * @var string
+     */
+    private $base_uri;
+    /**
+     * @var string|null
+     */
+    private $user_agent;
+    /**
+     * @var array
+     */
+    private $options;
+
+    /**
+     * Instantiate this class.
+     *
+     * @param  string       $access_token       Access token to validate the request.
+     * @param  string       $targetApplication  The application ID for the target application to which access is being delegated.
+     * @param  string       $base_uri           The base URI for the Orders API
+     * @param  string|null  $user_agent         The user-agent for the request. If none is supplied, a default one will be provided.
+     * @param  array        $options            Merve curl options.
+     *
+     * @link https://developer-docs.amazon.com/sp-api/docs/tokens-api-v2021-03-01-reference
+     */
+    public function __construct(
+        string $access_token,
+        string $targetApplication,
+        string $base_uri = 'https://sellingpartnerapi-na.amazon.com/tokens/2021-03-01/restrictedDataToken',
+        ?string $user_agent = null,
+        array $options = []
+    ) {
+        $this->access_token = $access_token;
+        $this->targetApplication = $targetApplication;
+        $this->base_uri = $base_uri;
+        $this->user_agent = $user_agent;
+        $this->options = $options;
+    }
+
+    /**
+     * Instantiate this class.
+     *
+     * @param  string       $access_token       Access token to validate the request.
+     * @param  string       $targetApplication  The application ID for the target application to which access is being delegated.
+     * @param  string       $base_uri           The base URI for the Orders API
+     * @param  string|null  $user_agent         The user-agent for the request. If none is supplied, a default one will be provided.
+     * @param  array        $options            Merve curl options.
+     *
+     * @link https://developer-docs.amazon.com/sp-api/docs/tokens-api-v2021-03-01-reference
+     */
+    public static function from(
+        string $access_token,
+        string $targetApplication,
+        string $base_uri = 'https://sellingpartnerapi-na.amazon.com/tokens/2021-03-01/restrictedDataToken',
+        ?string $user_agent = null,
+        array $options = []
+    ): self {
+        return new self($access_token, $targetApplication, $base_uri, $user_agent, $options);
+    }
+
+    /**
+     * @param  string  $path                    The path in the restricted resource. Here are some path examples:
      *                                          - /orders/v0/orders. For getting an RDT for the getOrders operation of the Orders API. For bulk orders.
      *                                          - /orders/v0/orders/123-1234567-1234567. For getting an RDT for the getOrder operation of the Orders API. For a specific order.
      *                                          - /orders/v0/orders/123-1234567-1234567/orderItems. For getting an RDT for the getOrderItems operation of the Orders API. For the order items in a specific order.
      *                                          - /mfn/v0/shipments/FBA1234ABC5D. For getting an RDT for the getShipment operation of the Shipping API. For a specific shipment.
      *                                          - /mfn/v0/shipments/{shipmentId}. For getting an RDT for the getShipment operation of the Shipping API. For any of a selling partner's shipments that you specify when you call the getShipment operation.
-     * @param  array        $dataElements       Indicates the type of Personally Identifiable Information requested. This parameter is required only when getting an RDT for use with the getOrder, getOrders, or getOrderItems operation of the Orders API. For more information, see the Tokens API Use Case Guide. Possible values include:
+     * @param  array   $dataElements            Indicates the type of Personally Identifiable Information requested. This parameter is required only when getting an RDT for use with the getOrder, getOrders, or getOrderItems operation of the Orders API. For more information, see the Tokens API Use Case Guide. Possible values include:
      *                                          - buyerInfo. On the order level this includes general identifying information about the buyer and tax-related information. On the order item level this includes gift wrap information and custom order information, if available.
      *                                          - shippingAddress. This includes information for fulfilling orders.
      *                                          - buyerTaxInformation. This includes information for issuing tax invoices
-     * @param  string|null  $targetApplication  The application ID for the target application to which access is being delegated.
-     * @param  string       $base_uri           The URL for the api
-     * @param  string|null  $user_agent         The user agent for the request.
-     * @param  array        $options            Curl options.
+     * @param  array   $options                 Curl options.
      *
      * @return array{
      *  info: array{
@@ -94,13 +157,9 @@ class SpapiTokens
      *
      * @link https://developer-docs.amazon.com/sp-api/docs/tokens-api-v2021-03-01-reference
      */
-    public static function createRestrictedDataToken(
-        string $access_token,
+    public function createRestrictedDataToken(
         string $path,
         array $dataElements = [],
-        ?string $targetApplication = null,
-        string $base_uri = 'https://sellingpartnerapi-na.amazon.com/tokens/2021-03-01/restrictedDataToken',
-        ?string $user_agent = null,
         array $options = []
     ): array {
         $CurlHandle = curl_init();
@@ -108,7 +167,7 @@ class SpapiTokens
         curl_setopt_array(
             $CurlHandle,
             [
-                CURLOPT_URL => $base_uri,
+                CURLOPT_URL => $this->base_uri,
                 CURLOPT_RETURNTRANSFER => true,
                 CURLOPT_ENCODING => "",
                 CURLOPT_MAXREDIRS => 10,
@@ -118,8 +177,8 @@ class SpapiTokens
                 CURLOPT_HTTPHEADER => [
                     'accept: application/json',
                     'content-type: application/json',
-                    "x-amz-access-token: $access_token",
-                    'user-agent: '.($user_agent ?: '(Language=PHP/'.PHP_VERSION.'; Platform='.php_uname('s').'/'.php_uname('r').')')
+                    "x-amz-access-token: $this->access_token",
+                    'user-agent: '.($this->user_agent ?: '(Language=PHP/'.PHP_VERSION.'; Platform='.php_uname('s').'/'.php_uname('r').')')
                 ],
                 CURLOPT_POSTFIELDS => json_encode([
                     'restrictedResources' => [
@@ -129,10 +188,10 @@ class SpapiTokens
                             'dataElements' => $dataElements
                         ]
                     ],
-                    'targetApplication' => $targetApplication
+                    'targetApplication' => $this->targetApplication
                 ]),
                 CURLOPT_HEADER => true,
-            ] + $options
+            ] + array_merge($options, $this->options)
         );
 
         $response = curl_exec($CurlHandle);

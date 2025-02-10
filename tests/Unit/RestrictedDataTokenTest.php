@@ -10,14 +10,13 @@ class RestrictedDataTokenTest extends TestCase
     /** @test */
     public function restrictedDataToken(): void
     {
-        $response = SpapiTokens::createRestrictedDataToken(
+        $response = SpapiTokens::from(
             'access_token',
-            'path',
-            ['dataElements'],
             'targetApplication',
             'https://httpbin.org/post',
             'user-agent'
-        );
+        )
+            ->createRestrictedDataToken('path', ['dataElements']);
 
         self::assertEquals(200, $response['info']['http_code']);
         self::assertEquals('access_token', $response['response']['headers']['X-Amz-Access-Token']);
