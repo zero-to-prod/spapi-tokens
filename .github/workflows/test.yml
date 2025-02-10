@@ -7,6 +7,16 @@ on:
     branches: [ main ]
 
 jobs:
+  roave-backwards-compatibility-check:
+    name: Roave Backwards Compatibility Check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: "Check for BC breaks"
+        uses: docker://nyholm/roave-bc-check-ga
+
   test:
     runs-on: ubuntu-latest
 
