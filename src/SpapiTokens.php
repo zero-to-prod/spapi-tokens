@@ -5,13 +5,16 @@ namespace Zerotoprod\SpapiTokens;
 use Zerotoprod\CurlHelper\CurlHelper;
 
 /**
+ * Get a Restricted Data Token (RDT) for Amazon Selling Partner API (SPAPI).
+ *
  * The Selling Partner API for Tokens provides a secure way to access a customer's PII
  * (Personally Identifiable Information). You can call the Tokens API to get a
  * Restricted Data Token (RDT) for one or more restricted resources that you
  * specify. The RDT authorizes subsequent calls to restricted operations
  * that correspond to the restricted resources that you specified.
  *
- * @link https://developer-docs.amazon.com/sp-api/docs/tokens-api-v2021-03-01-reference
+ * @see  https://developer-docs.amazon.com/sp-api/docs/tokens-api-v2021-03-01-reference
+ * @link https://github.com/zero-to-prod/spapi-tokens
  */
 class SpapiTokens
 {
@@ -45,7 +48,8 @@ class SpapiTokens
      * @param  string|null  $user_agent         The user-agent for the request. If none is supplied, a default one will be provided.
      * @param  array        $options            Merve curl options.
      *
-     * @link https://developer-docs.amazon.com/sp-api/docs/tokens-api-v2021-03-01-reference
+     * @see  https://developer-docs.amazon.com/sp-api/docs/tokens-api-v2021-03-01-reference
+     * @link https://github.com/zero-to-prod/spapi-tokens
      */
     public function __construct(
         string $access_token,
@@ -70,7 +74,8 @@ class SpapiTokens
      * @param  string|null  $user_agent         The user-agent for the request. If none is supplied, a default one will be provided.
      * @param  array        $options            Merve curl options.
      *
-     * @link https://developer-docs.amazon.com/sp-api/docs/tokens-api-v2021-03-01-reference
+     * @see  https://developer-docs.amazon.com/sp-api/docs/tokens-api-v2021-03-01-reference
+     * @link https://github.com/zero-to-prod/spapi-tokens
      */
     public static function from(
         string $access_token,
@@ -155,7 +160,8 @@ class SpapiTokens
      *      restrictedDataToken: string
      *  }
      *
-     * @link https://developer-docs.amazon.com/sp-api/docs/tokens-api-v2021-03-01-reference
+     * @see  https://developer-docs.amazon.com/sp-api/docs/tokens-api-v2021-03-01-reference
+     * @link https://github.com/zero-to-prod/spapi-tokens
      */
     public function createRestrictedDataToken(
         string $path,
