@@ -4,12 +4,18 @@ namespace Tests\Unit;
 
 use Tests\TestCase;
 use Zerotoprod\SpapiTokens\SpapiTokens;
+use Zerotoprod\SpapiTokens\Support\Testing\SpapiLwaResponseFactory;
+use Zerotoprod\SpapiTokens\Support\Testing\SpapiTokensFake;
 
 class RestrictedDataTokenTest extends TestCase
 {
     /** @test */
     public function restrictedDataToken(): void
     {
+        SpapiTokensFake::fake(
+            SpapiLwaResponseFactory::factory()->make()
+        );
+
         $response = SpapiTokens::from(
             'access_token',
             'targetApplication',
@@ -19,10 +25,26 @@ class RestrictedDataTokenTest extends TestCase
             ->createRestrictedDataToken('path', ['dataElements']);
 
         self::assertEquals(200, $response['info']['http_code']);
-        self::assertEquals('access_token', $response['response']['headers']['X-Amz-Access-Token']);
-        self::assertEquals('path', $response['response']['json']['restrictedResources'][0]['path']);
-        self::assertEquals('dataElements', $response['response']['json']['restrictedResources'][0]['dataElements'][0]);
-        self::assertEquals('targetApplication', $response['response']['json']['targetApplication']);
-        self::assertEquals('user-agent', $response['response']['headers']['User-Agent']);
+        self::assertEquals('restrictedDataToken', $response['response']['restrictedDataToken']);
+        self::assertEquals(3600, $response['response']['expiresIn']);
+    }
+
+    /** @test */
+    public function asError(): void
+    {
+        SpapiTokensFake::fake(
+            SpapiLwaResponseFactory::factory()->asError()->make()
+        );
+
+        $response = SpapiTokens::from(
+            'access_token',
+            'targetApplication',
+            'https://httpbin.org/post',
+            'user-agent'
+        )
+            ->createRestrictedDataToken('path', ['dataElements']);
+
+        self::assertEquals(400, $response['info']['http_code']);
+        self::assertEquals('InvalidInput', $response['response']['errors'][0]['code']);
     }
 }
