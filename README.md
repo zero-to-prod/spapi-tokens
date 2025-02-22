@@ -53,6 +53,23 @@ $response['response']['restrictedDataToken'];
 $response['response']['expiresIn'];
 ```
 
+## Testing
+
+You can fake the response for testing purposes.
+
+```php
+use Zerotoprod\SpapiTokens\SpapiTokens;
+use Zerotoprod\SpapiTokens\Support\Testing\SpapiLwaResponseFactory;
+use Zerotoprod\SpapiTokens\Support\Testing\SpapiTokensFake;
+
+SpapiTokensFake::fake(
+    SpapiLwaResponseFactory::factory()->make()
+);
+
+$response = SpapiTokens::from('access_token','targetApplication')
+            ->createRestrictedDataToken('path', ['dataElements']);
+```
+
 ## Contributing
 
 Contributions, issues, and feature requests are welcome!
