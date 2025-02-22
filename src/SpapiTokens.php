@@ -2,8 +2,12 @@
 
 namespace Zerotoprod\SpapiTokens;
 
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
+use Zerotoprod\Container\Container;
 use Zerotoprod\CurlHelper\CurlHelper;
 use Zerotoprod\SpapiTokens\Contracts\SpapiTokensInterface;
+use Zerotoprod\SpapiTokens\Support\Testing\SpapiTokensFake;
 
 class SpapiTokens implements SpapiTokensInterface
 {
@@ -63,6 +67,9 @@ class SpapiTokens implements SpapiTokensInterface
      * @param  string|null  $user_agent         The user-agent for the request. If none is supplied, a default one will be provided.
      * @param  array        $options            Merve curl options.
      *
+     * @return SpapiTokensInterface
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      * @see  https://developer-docs.amazon.com/sp-api/docs/tokens-api-v2021-03-01-reference
      * @link https://github.com/zero-to-prod/spapi-tokens
      */
@@ -73,7 +80,9 @@ class SpapiTokens implements SpapiTokensInterface
         ?string $user_agent = null,
         array $options = []
     ): SpapiTokensInterface {
-        return new self($access_token, $targetApplication, $base_uri, $user_agent, $options);
+        return Container::getInstance()->has(SpapiTokensFake::class)
+            ? Container::getInstance()->get(SpapiTokensFake::class)
+            : new self($access_token, $targetApplication, $base_uri, $user_agent, $options);
     }
 
     /**
@@ -117,15 +126,13 @@ class SpapiTokens implements SpapiTokensInterface
         );
 
         $response = curl_exec($CurlHandle);
-        $info = curl_getinfo($CurlHandle);
-        $error = curl_error($CurlHandle);
         $header_size = curl_getinfo($CurlHandle, CURLINFO_HEADER_SIZE);
 
         curl_close($CurlHandle);
 
         return [
-            'info' => $info,
-            'error' => $error,
+            'info' => curl_error($CurlHandle),
+            'error' => curl_error($CurlHandle),
             'headers' => CurlHelper::parseHeaders($response, $header_size),
             'response' => json_decode(substr($response, $header_size), true)
         ];
