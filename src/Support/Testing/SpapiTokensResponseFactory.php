@@ -7,7 +7,7 @@ use Zerotoprod\Factory\Factory;
 /**
  * @link https://github.com/zero-to-prod/spapi-lwa
  */
-class SpapiLwaResponseFactory
+class SpapiTokensResponseFactory
 {
     use Factory;
 

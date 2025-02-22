@@ -59,11 +59,11 @@ You can fake the response for testing purposes.
 
 ```php
 use Zerotoprod\SpapiTokens\SpapiTokens;
-use Zerotoprod\SpapiTokens\Support\Testing\SpapiLwaResponseFactory;
+use Zerotoprod\SpapiTokens\Support\Testing\SpapiTokensResponseFactory;
 use Zerotoprod\SpapiTokens\Support\Testing\SpapiTokensFake;
 
 SpapiTokensFake::fake(
-    SpapiLwaResponseFactory::factory()->make()
+    SpapiTokensResponseFactory::factory()->make()
 );
 
 $response = SpapiTokens::from('access_token','targetApplication')
