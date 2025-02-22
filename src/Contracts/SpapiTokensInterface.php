@@ -85,10 +85,15 @@ interface SpapiTokensInterface
      *      'Strict-Transport-Security': string
      *  },
      *  response: array{
-     *      expiresIn: int,
-     *      restrictedDataToken: string
+     *      expiresIn?: int,
+     *      restrictedDataToken?: string,
+     *      errors?: array<int, array{
+     *          code: string,
+     *          message: string,
+     *          details: string
+     *      }>
      *  }
-     *
+     * }
      * @see  https://developer-docs.amazon.com/sp-api/docs/tokens-api-v2021-03-01-reference
      * @link https://github.com/zero-to-prod/spapi-tokens
      */
