@@ -4,7 +4,7 @@ namespace Tests\Unit;
 
 use Tests\TestCase;
 use Zerotoprod\SpapiTokens\SpapiTokens;
-use Zerotoprod\SpapiTokens\Support\Testing\SpapiLwaResponseFactory;
+use Zerotoprod\SpapiTokens\Support\Testing\SpapiTokensResponseFactory;
 use Zerotoprod\SpapiTokens\Support\Testing\SpapiTokensFake;
 
 class RestrictedDataTokenTest extends TestCase
@@ -13,7 +13,7 @@ class RestrictedDataTokenTest extends TestCase
     public function restrictedDataToken(): void
     {
         SpapiTokensFake::fake(
-            SpapiLwaResponseFactory::factory()->make()
+            SpapiTokensResponseFactory::factory()->make()
         );
 
         $response = SpapiTokens::from(
@@ -33,7 +33,7 @@ class RestrictedDataTokenTest extends TestCase
     public function asError(): void
     {
         SpapiTokensFake::fake(
-            SpapiLwaResponseFactory::factory()->asError()->make()
+            SpapiTokensResponseFactory::factory()->asError()->make()
         );
 
         $response = SpapiTokens::from(
