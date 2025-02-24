@@ -131,7 +131,7 @@ class SpapiTokens implements SpapiTokensInterface
         curl_close($CurlHandle);
 
         return [
-            'info' => curl_error($CurlHandle),
+            'info' => curl_getinfo($CurlHandle),
             'error' => curl_error($CurlHandle),
             'headers' => CurlHelper::parseHeaders($response, $header_size),
             'response' => json_decode(substr($response, $header_size), true)
