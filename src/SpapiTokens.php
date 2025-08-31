@@ -9,6 +9,10 @@ use Zerotoprod\CurlHelper\CurlHelper;
 use Zerotoprod\SpapiTokens\Contracts\SpapiTokensInterface;
 use Zerotoprod\SpapiTokens\Support\Testing\SpapiTokensFake;
 
+/**
+ * Get a Restricted Data Token (RDT) for Amazon Selling Partner API (SPAPI).
+ * @link https://github.com/zero-to-prod/spapi-tokens
+ */
 class SpapiTokens implements SpapiTokensInterface
 {
     /**
@@ -87,6 +91,7 @@ class SpapiTokens implements SpapiTokensInterface
 
     /**
      * @inheritDoc
+     * @link https://github.com/zero-to-prod/spapi-tokens
      */
     public function createRestrictedDataToken(
         string $path,

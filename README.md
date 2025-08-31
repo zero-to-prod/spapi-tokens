@@ -18,6 +18,8 @@
 - [Requirements](#requirements)
 - [Installation](#installation)
 - [Usage](#usage)
+- [Documentation Publishing](#documentation-publishing)
+    - [Automatic Documentation Publishing](#automatic-documentation-publishing)
 - [Local Development](./LOCAL_DEVELOPMENT.md)
 - [Contributing](#contributing)
 
@@ -68,6 +70,39 @@ SpapiTokensFake::fake(
 
 $response = SpapiTokens::from('access_token','targetApplication')
             ->createRestrictedDataToken('path', ['dataElements']);
+```
+
+## Documentation Publishing
+
+You can publish this README to your local documentation directory.
+
+This can be useful for providing documentation for AI agents.
+
+This can be done using the included script:
+
+```bash
+# Publish to default location (./docs/zero-to-prod/spapi-tokens)
+vendor/bin/zero-to-prod-spapi-tokens
+
+# Publish to custom directory
+vendor/bin/zero-to-prod-spapi-tokens /path/to/your/docs
+```
+
+### Automatic Documentation Publishing
+
+You can automatically publish documentation by adding the following to your `composer.json`:
+
+```json
+{
+    "scripts": {
+        "post-install-cmd": [
+            "zero-to-prod-spapi-tokens"
+        ],
+        "post-update-cmd": [
+            "zero-to-prod-spapi-tokens"
+        ]
+    }
+}
 ```
 
 ## Contributing
