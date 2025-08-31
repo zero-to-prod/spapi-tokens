@@ -17,9 +17,9 @@
 - [Introduction](#introduction)
 - [Requirements](#requirements)
 - [Installation](#installation)
-- [Usage](#usage)
 - [Documentation Publishing](#documentation-publishing)
-    - [Automatic Documentation Publishing](#automatic-documentation-publishing)
+  - [Automatic Documentation Publishing](#automatic-documentation-publishing)
+- [Usage](#usage)
 - [Local Development](./LOCAL_DEVELOPMENT.md)
 - [Contributing](#contributing)
 
@@ -40,37 +40,6 @@ composer require zero-to-prod/spapi-tokens
 ```
 
 This will add the package to your project’s dependencies and create an autoloader entry for it.
-
-## Usage
-
-Call the Tokens API to get a [Restricted Data Token](https://developer-docs.amazon.com/sp-api/docs/tokens-api-v2021-03-01-reference) (RDT) for restricted resources.
-
-```php
-use Zerotoprod\SpapiTokens\SpapiTokens;
-
-$response = SpapiTokens::from('access_token','targetApplication')
-            ->createRestrictedDataToken('path', ['dataElements']);
-
-$response['response']['restrictedDataToken'];
-$response['response']['expiresIn'];
-```
-
-## Testing
-
-You can fake the response for testing purposes.
-
-```php
-use Zerotoprod\SpapiTokens\SpapiTokens;
-use Zerotoprod\SpapiTokens\Support\Testing\SpapiTokensResponseFactory;
-use Zerotoprod\SpapiTokens\Support\Testing\SpapiTokensFake;
-
-SpapiTokensFake::fake(
-    SpapiTokensResponseFactory::factory()->make()
-);
-
-$response = SpapiTokens::from('access_token','targetApplication')
-            ->createRestrictedDataToken('path', ['dataElements']);
-```
 
 ## Documentation Publishing
 
@@ -103,6 +72,37 @@ You can automatically publish documentation by adding the following to your `com
         ]
     }
 }
+```
+
+## Usage
+
+Call the Tokens API to get a [Restricted Data Token](https://developer-docs.amazon.com/sp-api/docs/tokens-api-v2021-03-01-reference) (RDT) for restricted resources.
+
+```php
+use Zerotoprod\SpapiTokens\SpapiTokens;
+
+$response = SpapiTokens::from('access_token','targetApplication')
+            ->createRestrictedDataToken('path', ['dataElements']);
+
+$response['response']['restrictedDataToken'];
+$response['response']['expiresIn'];
+```
+
+## Testing
+
+You can fake the response for testing purposes.
+
+```php
+use Zerotoprod\SpapiTokens\SpapiTokens;
+use Zerotoprod\SpapiTokens\Support\Testing\SpapiTokensResponseFactory;
+use Zerotoprod\SpapiTokens\Support\Testing\SpapiTokensFake;
+
+SpapiTokensFake::fake(
+    SpapiTokensResponseFactory::factory()->make()
+);
+
+$response = SpapiTokens::from('access_token','targetApplication')
+            ->createRestrictedDataToken('path', ['dataElements']);
 ```
 
 ## Contributing
