@@ -6,6 +6,7 @@ use Zerotoprod\Factory\Factory;
 
 /**
  * @link https://github.com/zero-to-prod/spapi-lwa
+ * @link https://github.com/zero-to-prod/spapi-tokens
  */
 class SpapiTokensResponseFactory
 {
@@ -69,6 +70,7 @@ class SpapiTokensResponseFactory
      * Generates an error response.
      *
      * @link https://github.com/zero-to-prod/spapi-lwa
+     * @link https://github.com/zero-to-prod/spapi-tokens
      */
     public function asError(array $merge = []): self
     {
