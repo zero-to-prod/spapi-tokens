@@ -37,6 +37,9 @@ class SpapiTokensFake implements SpapiTokensInterface
         return $instance;
     }
 
+    /**
+     * @link https://github.com/zero-to-prod/spapi-tokens
+     */
     public function createRestrictedDataToken(string $path, array $dataElements = [], array $options = []): array
     {
         return $this->response;
